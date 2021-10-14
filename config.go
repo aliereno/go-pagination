@@ -15,7 +15,7 @@ type Config struct {
 	// Default: SimplePage
 	PageType pages.IPage
 	// Default: Array
-	Datatype datatype.IDatabase
+	Datatype datatype.IDatatype
 	// Default: Fiber
 	Framework frameworks.IFramework
 }

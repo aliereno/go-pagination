@@ -53,9 +53,10 @@ func Benchmark_String_Array(b *testing.B) {
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		err = c.JSON(Paginate(items, Config{
-			PageSize: 10,
+			PageSize:  10,
+			Framework: frameworks.Fiber{Context: c},
 		}))
 	}
 	utils.AssertEqual(b, nil, err)
-	utils.AssertEqual(b, `{"currentPage":0,"pageSize":10,"totalPage":999,"items":["1","2","3","4","5","6","7","8","9","10"]}`, string(c.Response().Body()))
+	utils.AssertEqual(b, `{"currentPage":1,"pageSize":10,"totalPage":1000,"items":["1","2","3","4","5","6","7","8","9","10"]}`, string(c.Response().Body()))
 }

@@ -1,5 +1,5 @@
 package datatype
 
-type IDatabase interface {
+type IDatatype interface {
 	GetSlicedItemsAndCount(data interface{}, start, end, pageSize int) ([]interface{}, int, error)
 }
