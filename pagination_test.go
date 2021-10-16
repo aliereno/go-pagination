@@ -8,7 +8,7 @@ import (
 	"github.com/aliereno/go-pagination/frameworks"
 	"github.com/aliereno/go-pagination/pages"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/utils"
+	"github.com/stretchr/testify/assert"
 	"github.com/valyala/fasthttp"
 )
 
@@ -57,6 +57,6 @@ func Benchmark_String_Array(b *testing.B) {
 			Framework: frameworks.Fiber{Context: c},
 		}))
 	}
-	utils.AssertEqual(b, nil, err)
-	utils.AssertEqual(b, `{"currentPage":1,"pageSize":10,"totalPage":1000,"items":["1","2","3","4","5","6","7","8","9","10"]}`, string(c.Response().Body()))
+	assert.Equal(b, nil, err)
+	assert.Equal(b, `{"currentPage":1,"pageSize":10,"totalPage":1000,"items":["1","2","3","4","5","6","7","8","9","10"]}`, string(c.Response().Body()))
 }

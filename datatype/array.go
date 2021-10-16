@@ -8,27 +8,27 @@ import (
 type Array struct {
 }
 
-func (a Array) GetSlicedItemsAndCount(data interface{}, start, end, pageSize int) ([]interface{}, int, error) {
+func (a Array) GetSlicedItemsAndCount(data interface{}, start, end, pageSize int) (interface{}, int, error) {
 	// Check slice is valid
 	slice, valid := takeArg(data, reflect.Slice)
 	if !valid {
 		return nil, 0, errors.New("slice is not valid")
 	}
-
+	totalSize := slice.Len()
 	currentPageSize := pageSize
-	if end > slice.Len() {
-		currentPageSize = currentPageSize - (end - slice.Len())
+	if end > totalSize {
+		currentPageSize = currentPageSize - (end - totalSize)
 	}
 	if currentPageSize < 0 {
 		currentPageSize = 0
 	}
 	items := make([]interface{}, currentPageSize)
 	for i := 0; i < currentPageSize; i++ {
-		if (i + start) < slice.Len() {
+		if (i + start) < totalSize {
 			items[i] = slice.Index(i + start).Interface()
 		}
 	}
-	return items, slice.Len(), nil
+	return items, totalSize, nil
 }
 
 func takeArg(arg interface{}, kind reflect.Kind) (val reflect.Value, ok bool) {

@@ -7,13 +7,13 @@ import (
 
 // Page is used as response struct.
 type LinksPage struct {
-	NextPage     *string       `json:"nextPage"`
-	PreviousPage *string       `json:"previousPage"`
-	TotalPage    int           `json:"totalPage"`
-	Items        []interface{} `json:"items"`
+	NextPage     *string     `json:"nextPage"`
+	PreviousPage *string     `json:"previousPage"`
+	TotalPage    int         `json:"totalPage"`
+	Items        interface{} `json:"items"`
 }
 
-func (l LinksPage) Response(page int, pageSize int, totalPage int, items []interface{}, query string) interface{} {
+func (l LinksPage) Response(page int, pageSize int, totalPage int, items interface{}, query string) interface{} {
 	var nextPage, previousPage *string
 	if page+1 <= totalPage {
 		params := url.Values{}
