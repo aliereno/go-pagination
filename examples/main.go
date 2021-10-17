@@ -24,9 +24,8 @@ func main() {
 	db := initDB()
 	items := initItems()
 
-	app.Get("/items", func(c *fiber.Ctx) error {
+	app.Get("/array", func(c *fiber.Ctx) error {
 		return c.JSON(pagination.Paginate(items, pagination.Config{
-			PageType: pages.LinksPage{},
 			Framework: frameworks.Fiber{
 				Context: c,
 			},
@@ -36,10 +35,12 @@ func main() {
 	app.Get("/gorm", func(c *fiber.Ctx) error {
 		query := db.Model(&User{}).Order("id desc")
 		return c.JSON(pagination.Paginate(query, pagination.Config{
+			PageSize: 100,
+			PageType: pages.LinksPage{},
+			Datatype: datatype.GORM{},
 			Framework: frameworks.Fiber{
 				Context: c,
 			},
-			Datatype: datatype.GORM{},
 		}))
 	})
 

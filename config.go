@@ -10,13 +10,24 @@ import (
 
 // Config defines the config for pagination.
 type Config struct {
+	// Max number of items per page
+	//
 	// Default: 50
 	PageSize int
-	// Default: SimplePage
+
+	// Structure of pagination response
+	//
+	// Default: SimplePage | Choices: SimplePage, LinksPage
 	PageType pages.IPage
-	// Default: Array
+
+	// Type of variable to be given to the Paginate func
+	//
+	// Default: Array | Choices: Array, GORM
 	Datatype datatype.IDatatype
-	// Default: Fiber
+
+	// Framework to pull page and page_size variables
+	//
+	// Required | Choices: Fiber
 	Framework frameworks.IFramework
 }
 

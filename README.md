@@ -41,13 +41,69 @@ func main() {
 	app.Get("/gorm", func(c *fiber.Ctx) error {
 		query := gorm.DB.Model(&User{}).Order("id desc")
 		return c.JSON(pagination.Paginate(query, pagination.Config{
+			PageSize: 100,
+			PageType: pages.LinksPage{},
+			Datatype: datatype.GORM{},
 			Framework: frameworks.Fiber{
 				Context: c,
 			},
-			Datatype: datatype.GORM{},
 		}))
 	})
 
 	log.Fatal(app.Listen(":3000"))
 }
+```
+
+## Config
+
+```go
+type Config struct {
+	
+	// Max number of items per page
+	//
+	// Default: 50
+	PageSize int
+
+	// Structure of pagination response
+	//
+	// Default: SimplePage | Choices: SimplePage, LinksPage
+	PageType pages.IPage
+	
+	// Type of variable to be given to the Paginate func
+	//
+	// Default: Array | Choices: Array, GORM
+	Datatype datatype.IDatatype
+	
+	// Framework to pull page and page_size variables
+	//
+	// Required | Choices: Fiber
+	Framework frameworks.IFramework
+}
+```
+
+## Customization
+You can customize the response structure.
+```go
+type CustomPage struct {
+	CustomField string      `json:"customField"`
+	Page        int         `json:"currentPage"`
+	Items       interface{} `json:"items"`
+}
+
+func (s CustomPage) Response(page int, pageSize int, totalPage int, items interface{}, query string) interface{} {
+	s.Page = page
+	s.Items = items
+	return s
+}
+```
+You can use it in the Paginate function.
+```go
+pagination.Paginate(items, pagination.Config{
+	PageType: CustomPage{
+		CustomField: time.Now().String(),
+	},
+	Framework: frameworks.Fiber{
+		Context: c,
+	},
+})
 ```
